@@ -1,0 +1,95 @@
+:root {
+  --canvas-width: 1080px;
+  --canvas-height: 1350px;
+
+  --logo-top: 90px;
+  --logo-left: 105px;
+  --logo-width: 390px;
+
+  --content-left: 210px;
+  --content-right: 85px;
+  --content-top: 420px;
+
+  --title-size: 76px;
+  --title-line-height: 1.08;
+  --title-letter-spacing: -3px;
+
+  --subtitle-margin-top: 145px;
+  --subtitle-size: 32px;
+
+  --color-white: #ffffff;
+  --color-accent: #caa762;
+  --color-subtitle: rgba(255, 255, 255, 0.62);
+}
+@font-face {
+    font-family: "MontserratCustom";
+    src: url("{{MONTSERRAT_EXTRABOLD}}") format("truetype");
+    font-weight: 800;
+  }
+  
+  @font-face {
+    font-family: "InterCustom";
+    src: url("{{INTER_REGULAR}}") format("truetype");
+    font-weight: 400;
+  }
+  
+  html,
+  body {
+    width: 1080px;
+    height: 1350px;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+  
+  body {
+    position: relative;
+    background: #050608;
+    background-image: url("{{BACKGROUND}}");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  
+  .logo {
+    position: absolute;
+    top: var(--logo-top);
+    left: var(--logo-left);
+    width: var(--logo-width);
+  }
+  
+  
+  .logo img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  
+  .content {
+    position: absolute;
+    left: var(--content-left);
+    right: var(--content-right);
+    top: var(--content-top);
+  }
+  
+  h1 {
+    margin: 0;
+    font-family: "MontserratCustom", sans-serif;
+    font-size: var(--title-size);
+    line-height: var(--title-line-height);
+    font-weight: 800;
+    letter-spacing: var(--title-letter-spacing);
+    color: var(--color-white);
+  }
+  
+  .accent {
+    color: #caa762;
+  }
+  
+  .subtitle {
+    margin: 145px 0 0;
+    font-family: "InterCustom", sans-serif;
+    font-size: 32px;
+    line-height: 1.25;
+    color: rgba(255, 255, 255, 0.62);
+  }
