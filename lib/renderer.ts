@@ -1,9 +1,21 @@
-import { chromium } from "playwright";
+import { chromium } from "playwright-core";
+import chromiumServerless from "@sparticuz/chromium";
 
 export async function renderHtmlToPng(html: string) {
-  const browser = await chromium.launch({
-    headless: true,
-  });
+  const isVercel = !!process.env.VERCEL;
+
+  const browser = await chromium.launch(
+    isVercel
+      ? {
+          args: chromiumServerless.args,
+          executablePath: await chromiumServerless.executablePath(),
+          headless: true,
+        }
+      : {
+          headless: true,
+          executablePath: undefined,
+        }
+  );
 
   try {
     const page = await browser.newPage({
@@ -17,11 +29,9 @@ export async function renderHtmlToPng(html: string) {
       waitUntil: "networkidle",
     });
 
-    const png = await page.screenshot({
+    return await page.screenshot({
       type: "png",
     });
-
-    return png;
   } finally {
     await browser.close();
   }
