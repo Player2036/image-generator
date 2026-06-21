@@ -1,6 +1,6 @@
-const fs = require("fs");
-const readline = require("readline");
-const { google } = require("googleapis");
+import fs from "fs";
+import readline from "readline";
+import { google } from "googleapis";
 
 const CREDENTIALS_PATH = "credentials/oauth-client.json";
 const TOKEN_PATH = "credentials/google-token.json";

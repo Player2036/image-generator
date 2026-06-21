@@ -24,13 +24,17 @@
 @font-face {
     font-family: "MontserratCustom";
     src: url("{{MONTSERRAT_EXTRABOLD}}") format("truetype");
+    font-style: normal;
     font-weight: 800;
+    font-display: block;
   }
   
   @font-face {
     font-family: "InterCustom";
     src: url("{{INTER_REGULAR}}") format("truetype");
+    font-style: normal;
     font-weight: 400;
+    font-display: block;
   }
   
   html,

@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "verify:render-fonts": "node scripts/verify-render-fonts.mjs",
     "start": "next start",
     "lint": "eslint"
   },

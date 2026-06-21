@@ -59,10 +59,8 @@ export function buildHtml(data: RenderRequest) {
       readAssetAsDataUrl("fonts/Inter_28pt-Regular.ttf", "font/ttf")
     );
 
-  const cssDataUrl = `data:text/css;charset=utf-8,${encodeURIComponent(css)}`;
-
   return template
-    .replaceAll("{{CSS}}", cssDataUrl)
+    .replaceAll("{{CSS}}", css)
     .replaceAll("{{LOGO}}", logoDataUrl)
     .replaceAll("{{TITLE}}", titleHtml)
     .replaceAll("{{SUBTITLE}}", subtitle);
