@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server";
-import { buildHtmlWithDiagnostics } from "@/lib/template";
+import { buildHtml } from "@/lib/template";
 import { renderHtmlToPng } from "@/lib/renderer";
 import {
   uploadPngToGoogleDrive,
@@ -99,31 +99,10 @@ export async function POST(req: NextRequest) {
   try {
     validateGoogleDriveConfiguration();
 
-    const debug = req.nextUrl.searchParams.get("debug") === "1";
     const body = await readRenderRequest(req);
 
-    const { diagnostics: templateDiagnostics, html } =
-      buildHtmlWithDiagnostics(body);
-    const renderResult = await renderHtmlToPng(html, { debug });
-    const png = Buffer.isBuffer(renderResult)
-      ? renderResult
-      : renderResult.png;
-
-    if (debug) {
-      const renderDiagnostics = Buffer.isBuffer(renderResult)
-        ? undefined
-        : renderResult.diagnostics;
-
-      return Response.json({
-        success: true,
-        debug: {
-          pngBytes: png.byteLength,
-          render: renderDiagnostics,
-          template: templateDiagnostics,
-        },
-        imageBase64: png.toString("base64"),
-      });
-    }
+    const html = buildHtml(body);
+    const png = await renderHtmlToPng(html);
 
     const fileName = `image-${Date.now()}.png`;
     const uploadedFile = await uploadPngToGoogleDrive(png, fileName);

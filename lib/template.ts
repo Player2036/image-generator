@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import { readAsset, type AssetDataUrl } from "./assets";
+import { readAssetAsDataUrl } from "./assets";
 import type { RenderRequest, TitleLine } from "@/types/render";
 
 function escapeHtml(text: string) {
@@ -30,21 +30,7 @@ function renderTitle(title?: TitleLine[]) {
     .join("<br>");
 }
 
-type TemplateDiagnostics = {
-  assetBytes: Record<string, number>;
-  containsFontFace: boolean;
-  containsUtf8Meta: boolean;
-  cssLength: number;
-  htmlLength: number;
-};
-
-function collectAssetBytes(assets: AssetDataUrl[]) {
-  return Object.fromEntries(
-    assets.map((asset) => [asset.path, asset.byteLength])
-  );
-}
-
-export function buildHtmlWithDiagnostics(data: RenderRequest) {
+export function buildHtml(data: RenderRequest) {
   const titleHtml = renderTitle(data.title);
   const subtitle = escapeHtml(data.subtitle ?? "");
 
@@ -53,13 +39,7 @@ export function buildHtmlWithDiagnostics(data: RenderRequest) {
     "utf8"
   );
 
-  const logo = readAsset("logo.png", "image/png");
-  const background = readAsset("background.png", "image/png");
-  const montserratExtraBold = readAsset(
-    "fonts/Montserrat-ExtraBold.ttf",
-    "font/ttf"
-  );
-  const interRegular = readAsset("fonts/Inter_28pt-Regular.ttf", "font/ttf");
+  const logoDataUrl = readAssetAsDataUrl("logo.png", "image/png");
 
   const css = fs
     .readFileSync(
@@ -68,42 +48,20 @@ export function buildHtmlWithDiagnostics(data: RenderRequest) {
     )
     .replaceAll(
       "{{BACKGROUND}}",
-      background.dataUrl
+      readAssetAsDataUrl("background.png", "image/png")
     )
     .replaceAll(
       "{{MONTSERRAT_EXTRABOLD}}",
-      montserratExtraBold.dataUrl
+      readAssetAsDataUrl("fonts/Montserrat-ExtraBold.ttf", "font/ttf")
     )
     .replaceAll(
       "{{INTER_REGULAR}}",
-      interRegular.dataUrl
+      readAssetAsDataUrl("fonts/Inter_28pt-Regular.ttf", "font/ttf")
     );
 
-  const html = template
+  return template
     .replaceAll("{{CSS}}", css)
-    .replaceAll("{{LOGO}}", logo.dataUrl)
+    .replaceAll("{{LOGO}}", logoDataUrl)
     .replaceAll("{{TITLE}}", titleHtml)
     .replaceAll("{{SUBTITLE}}", subtitle);
-
-  const diagnostics: TemplateDiagnostics = {
-    assetBytes: collectAssetBytes([
-      logo,
-      background,
-      montserratExtraBold,
-      interRegular,
-    ]),
-    containsFontFace: css.includes("@font-face"),
-    containsUtf8Meta: html.includes('charset="UTF-8"'),
-    cssLength: css.length,
-    htmlLength: html.length,
-  };
-
-  return {
-    diagnostics,
-    html,
-  };
-}
-
-export function buildHtml(data: RenderRequest) {
-  return buildHtmlWithDiagnostics(data).html;
 }
