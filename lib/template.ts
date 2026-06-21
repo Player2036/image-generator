@@ -39,7 +39,7 @@ export function buildHtml(data: RenderRequest) {
     "utf8"
   );
 
-  const logoDataUrl = readAssetAsDataUrl("assets/logo.png", "image/png");
+  const logoDataUrl = readAssetAsDataUrl("logo.png", "image/png");
 
   const css = fs
     .readFileSync(
@@ -48,15 +48,15 @@ export function buildHtml(data: RenderRequest) {
     )
     .replaceAll(
       "{{BACKGROUND}}",
-      readAssetAsDataUrl("assets/background.png", "image/png")
+      readAssetAsDataUrl("background.png", "image/png")
     )
     .replaceAll(
       "{{MONTSERRAT_EXTRABOLD}}",
-      readAssetAsDataUrl("assets/fonts/Montserrat-ExtraBold.ttf", "font/ttf")
+      readAssetAsDataUrl("fonts/Montserrat-ExtraBold.ttf", "font/ttf")
     )
     .replaceAll(
       "{{INTER_REGULAR}}",
-      readAssetAsDataUrl("assets/fonts/Inter_28pt-Regular.ttf", "font/ttf")
+      readAssetAsDataUrl("fonts/Inter_28pt-Regular.ttf", "font/ttf")
     );
 
   const cssDataUrl = `data:text/css;charset=utf-8,${encodeURIComponent(css)}`;

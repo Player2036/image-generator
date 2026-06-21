@@ -1,13 +1,16 @@
 import { google } from "googleapis";
+import { getRequiredEnvValues } from "./env";
 
 export function getGoogleOAuthClient() {
-  const clientId = process.env.GOOGLE_CLIENT_ID;
-  const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
-  const refreshToken = process.env.GOOGLE_REFRESH_TOKEN;
-
-  if (!clientId || !clientSecret || !refreshToken) {
-    throw new Error("Missing Google OAuth environment variables");
-  }
+  const {
+    GOOGLE_CLIENT_ID: clientId,
+    GOOGLE_CLIENT_SECRET: clientSecret,
+    GOOGLE_REFRESH_TOKEN: refreshToken,
+  } = getRequiredEnvValues([
+    "GOOGLE_CLIENT_ID",
+    "GOOGLE_CLIENT_SECRET",
+    "GOOGLE_REFRESH_TOKEN",
+  ] as const);
 
   const auth = new google.auth.OAuth2(
     clientId,

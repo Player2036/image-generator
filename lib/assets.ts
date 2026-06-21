@@ -2,10 +2,10 @@ import fs from "fs";
 import path from "path";
 
 export function readAssetAsDataUrl(
-  relativePath: string,
+  assetPath: string,
   mimeType: string
 ) {
-  const filePath = path.join(process.cwd(), relativePath);
+  const filePath = path.join(process.cwd(), "assets", assetPath);
 
   const base64 = fs.readFileSync(filePath).toString("base64");
 

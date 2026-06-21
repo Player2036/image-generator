@@ -11,19 +11,19 @@ export function buildCss() {
   return css
     .replaceAll(
       "{{BACKGROUND}}",
-      readAssetAsDataUrl("assets/background.png", "image/png")
+      readAssetAsDataUrl("background.png", "image/png")
     )
     .replaceAll(
       "{{MONTSERRAT_EXTRABOLD}}",
       readAssetAsDataUrl(
-        "assets/fonts/Montserrat-ExtraBold.ttf",
+        "fonts/Montserrat-ExtraBold.ttf",
         "font/ttf"
       )
     )
     .replaceAll(
       "{{INTER_REGULAR}}",
       readAssetAsDataUrl(
-        "assets/fonts/Inter_28pt-Regular.ttf",
+        "fonts/Inter_28pt-Regular.ttf",
         "font/ttf"
       )
     );

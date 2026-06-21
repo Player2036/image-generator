@@ -4,6 +4,8 @@ const nextConfig: NextConfig = {
   serverExternalPackages: ["@sparticuz/chromium"],
   outputFileTracingIncludes: {
     "/api/render": [
+      "./assets/**",
+      "./templates/**",
       "./node_modules/playwright-core/browsers.json",
       "./node_modules/@sparticuz/chromium/bin/**",
     ],

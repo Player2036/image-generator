@@ -1,21 +1,29 @@
-import { chromium } from "playwright-core";
+import { chromium, type LaunchOptions } from "playwright-core";
 import chromiumServerless from "@sparticuz/chromium";
 
-export async function renderHtmlToPng(html: string) {
-  const isVercel = !!process.env.VERCEL;
+async function getChromiumLaunchOptions(): Promise<LaunchOptions> {
+  if (process.env.VERCEL) {
+    const executablePath = await chromiumServerless.executablePath();
 
-  const browser = await chromium.launch(
-    isVercel
-      ? {
-          args: chromiumServerless.args,
-          executablePath: await chromiumServerless.executablePath(),
-          headless: true,
-        }
-      : {
-          headless: true,
-          executablePath: undefined,
-        }
-  );
+    if (!executablePath) {
+      throw new Error("Serverless Chromium executable path was not resolved");
+    }
+
+    return {
+      args: chromiumServerless.args,
+      chromiumSandbox: false,
+      executablePath,
+      headless: true,
+    };
+  }
+
+  return {
+    headless: true,
+  };
+}
+
+export async function renderHtmlToPng(html: string) {
+  const browser = await chromium.launch(await getChromiumLaunchOptions());
 
   try {
     const page = await browser.newPage({
@@ -26,7 +34,7 @@ export async function renderHtmlToPng(html: string) {
     });
 
     await page.setContent(html, {
-      waitUntil: "networkidle",
+      waitUntil: "load",
     });
 
     return await page.screenshot({
